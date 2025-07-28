@@ -26,7 +26,7 @@ public class RespawnManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     /* ------------------------------------------------------------------ */

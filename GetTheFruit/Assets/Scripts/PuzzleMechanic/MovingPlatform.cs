@@ -87,6 +87,7 @@ public class MovingPlatform : MechanismBase
         {
             int nextIndex = _currentIndex + _direction;
 
+            // Reached end of the waypoint array
             if (nextIndex >= _waypoints.Length || nextIndex < 0)
             {
                 if (_pingPong)
@@ -96,7 +97,9 @@ public class MovingPlatform : MechanismBase
                 }
                 else
                 {
-                    nextIndex = (_direction == 1) ? 0 : _waypoints.Length - 1;
+                    // Stop at the final waypoint when ping‑pong is off
+                    _moveRoutine = null;
+                    yield break;
                 }
             }
 
@@ -112,10 +115,8 @@ public class MovingPlatform : MechanismBase
                 Vector3 newPos = Vector3.Lerp(start, end, t);
                 Vector3 delta = newPos - _lastPosition;
 
-                // Move platform
                 transform.position = newPos;
 
-                // Move all passengers with same delta
                 foreach (Rigidbody2D rb in _passengers)
                     rb.position += (Vector2)delta;
 
