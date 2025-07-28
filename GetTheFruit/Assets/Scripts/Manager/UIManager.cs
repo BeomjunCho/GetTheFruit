@@ -99,6 +99,10 @@ public class UIManager : MonoBehaviour
 
     private void OnReturnToMenu()
     {
+        // reset checkpoint before unloading level
+        if (RespawnManager.Instance != null)
+            RespawnManager.Instance.ResetCheckpoint();
+
         Time.timeScale = 1f;
         _isPaused = false;
         HideAll();

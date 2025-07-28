@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Stores the last checkpoint position and respawns the whole player group
@@ -17,6 +19,9 @@ public class RespawnManager : MonoBehaviour
     private bool _hasCheckpoint;
     private bool _isRespawning;
 
+    public bool HasCheckpoint => _hasCheckpoint;
+    public Vector3 LastCheckpointPos => _lastCheckpointPos;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -27,6 +32,31 @@ public class RespawnManager : MonoBehaviour
 
         Instance = this;
         //DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(DelayedSceneRespawn());
+        if (Camera.main.TryGetComponent(out CameraController cam))
+            cam.SnapImmediately();
+    }
+
+    private IEnumerator DelayedSceneRespawn()
+    {
+        yield return null; 
+        if (!HasCheckpoint) yield break;
+        foreach (var p in _players)
+            p.OnRespawn(_lastCheckpointPos);
     }
 
     /* ------------------------------------------------------------------ */
@@ -56,6 +86,13 @@ public class RespawnManager : MonoBehaviour
     {
         if (_isRespawning || !_hasCheckpoint) return;
         StartCoroutine(GroupRespawnRoutine());
+    }
+
+    /// <summary>Clears saved checkpoint so next level starts fresh.</summary>
+    public void ResetCheckpoint()
+    {
+        _hasCheckpoint = false;
+        _lastCheckpointPos = Vector3.zero;
     }
 
     private System.Collections.IEnumerator GroupRespawnRoutine()

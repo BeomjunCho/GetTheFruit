@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Presets;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles death and respawn for a single player.
@@ -25,12 +28,28 @@ public class PlayerRespawnHandler : MonoBehaviour
             RespawnManager.Instance.UnregisterPlayer(this);
     }
 
+    private void OnEnable()
+    {
+        GameInputManager.Instance.Controls.Global.Reset.performed += OnReset;
+    }
+
+    private void OnDisable()
+    {
+        GameInputManager.Instance.Controls.Global.Reset.performed -= OnReset;
+    }
+
+    private void OnReset(InputAction.CallbackContext ctx)
+    {
+        Scene current = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(current.name);
+    }
+
     /* ------------------------------------------------------------------ */
     /*  Public API                                                        */
     public void Die()
     {
         if (_isDead) return;
-
+       
         RespawnManager.Instance.RequestGroupRespawn();
     }
 

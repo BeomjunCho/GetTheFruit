@@ -7,6 +7,7 @@ using UnityEngine;
 /// Movement is controlled via a MechanismEventChannel (e.g., Lever).
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovingPlatform : MechanismBase
 {
     /* ------------------------------------------------------------------ */
@@ -38,10 +39,18 @@ public class MovingPlatform : MechanismBase
 
     private readonly HashSet<Rigidbody2D> _passengers = new();
     private Vector3 _lastPosition;
+    private Rigidbody2D _rb;
 
     /* ------------------------------------------------------------------ */
     /*  Unity lifecycle                                                   */
     /* ------------------------------------------------------------------ */
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.bodyType = RigidbodyType2D.Kinematic;     
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+    }
+
     private void OnEnable()
     {
         if (_channel != null)
@@ -110,18 +119,18 @@ public class MovingPlatform : MechanismBase
 
             while (t < 1f)
             {
-                t += Time.deltaTime * (_moveSpeed / dist);
+                t += Time.fixedDeltaTime * (_moveSpeed / dist);
 
                 Vector3 newPos = Vector3.Lerp(start, end, t);
                 Vector3 delta = newPos - _lastPosition;
 
-                transform.position = newPos;
+                _rb.MovePosition(newPos);
 
-                foreach (Rigidbody2D rb in _passengers)
-                    rb.position += (Vector2)delta;
+                /*foreach (Rigidbody2D rb in _passengers)
+                    rb.MovePosition(rb.position + (Vector2)delta);*/
 
                 _lastPosition = newPos;
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
 
             _currentIndex = nextIndex;
