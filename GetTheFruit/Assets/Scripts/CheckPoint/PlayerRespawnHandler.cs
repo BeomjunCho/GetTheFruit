@@ -1,0 +1,53 @@
+﻿using UnityEngine;
+
+/// <summary>
+/// Handles death and respawn for a single player.
+/// Real respawn is coordinated by RespawnManager.
+/// </summary>
+public class PlayerRespawnHandler : MonoBehaviour
+{
+    private bool _isDead;
+
+    /* ------------------------------------------------------------------ */
+    /*  Unity lifecycle                                                   */
+    private void Start()
+    {
+        // Register after RespawnManager Awake has run
+        if (RespawnManager.Instance != null)
+            RespawnManager.Instance.RegisterPlayer(this);
+        else
+            Debug.LogError("RespawnManager instance not found in scene.");
+    }
+
+    private void OnDestroy()
+    {
+        if (RespawnManager.Instance != null)
+            RespawnManager.Instance.UnregisterPlayer(this);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Public API                                                        */
+    public void Die()
+    {
+        if (_isDead) return;
+
+        RespawnManager.Instance.RequestGroupRespawn();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Called by RespawnManager                                          */
+    public void OnDeathStart()
+    {
+        if (_isDead) return;
+
+        _isDead = true;
+        gameObject.SetActive(false); // hide for now
+    }
+
+    public void OnRespawn(Vector3 pos)
+    {
+        transform.position = pos;
+        gameObject.SetActive(true);
+        _isDead = false;
+    }
+}
