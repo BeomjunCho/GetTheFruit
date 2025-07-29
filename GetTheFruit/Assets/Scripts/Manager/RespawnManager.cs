@@ -19,6 +19,9 @@ public class RespawnManager : MonoBehaviour
     private bool _hasCheckpoint;
     private bool _isRespawning;
 
+    public bool FinalGateOpen { get; private set; }
+    public void SetFinalGateOpen(bool value) => FinalGateOpen = value;
+
     public bool HasCheckpoint => _hasCheckpoint;
     public Vector3 LastCheckpointPos => _lastCheckpointPos;
 
@@ -88,11 +91,30 @@ public class RespawnManager : MonoBehaviour
         StartCoroutine(GroupRespawnRoutine());
     }
 
+    /// <summary>
+    /// Decides whether to reload the scene or just relocate players,
+    /// depending on whether the final gate is already open.
+    /// </summary>
+    public void RespawnOrRestartScene()
+    {
+        if (FinalGateOpen)
+        {
+            // Only move players back to the last checkpoint
+            RequestGroupRespawn();
+        }
+        else
+        {
+            // Full level reset
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
     /// <summary>Clears saved checkpoint so next level starts fresh.</summary>
     public void ResetCheckpoint()
     {
         _hasCheckpoint = false;
         _lastCheckpointPos = Vector3.zero;
+        FinalGateOpen = false;
     }
 
     private System.Collections.IEnumerator GroupRespawnRoutine()
@@ -108,6 +130,11 @@ public class RespawnManager : MonoBehaviour
         // Phase 2: respawn every player at the checkpoint
         foreach (var p in _players)
             p.OnRespawn(_lastCheckpointPos);
+
+        // Snap camera so it doesn¡¯t slide after the teleport
+        if (Camera.main != null &&
+            Camera.main.TryGetComponent(out CameraController cam))
+            cam.SnapImmediately();
 
         _isRespawning = false;
     }

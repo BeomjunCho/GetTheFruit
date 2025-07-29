@@ -18,6 +18,6 @@ public class DeadZoneVolume : MonoBehaviour
         if (_deathEffect != null)
             Instantiate(_deathEffect, other.transform.position, Quaternion.identity);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        RespawnManager.Instance?.RespawnOrRestartScene();
     }
 }

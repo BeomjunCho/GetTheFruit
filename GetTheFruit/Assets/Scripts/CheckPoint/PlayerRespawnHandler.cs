@@ -40,8 +40,7 @@ public class PlayerRespawnHandler : MonoBehaviour
 
     private void OnReset(InputAction.CallbackContext ctx)
     {
-        Scene current = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(current.name);
+        RespawnManager.Instance?.RespawnOrRestartScene();
     }
 
     /* ------------------------------------------------------------------ */
@@ -68,5 +67,9 @@ public class PlayerRespawnHandler : MonoBehaviour
         transform.position = pos;
         gameObject.SetActive(true);
         _isDead = false;
+
+        // Snap camera immediately so no drift is visible
+        if (Camera.main != null && Camera.main.TryGetComponent(out CameraController cam))
+            cam.SnapImmediately();
     }
 }

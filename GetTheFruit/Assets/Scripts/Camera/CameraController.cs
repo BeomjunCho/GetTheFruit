@@ -36,9 +36,8 @@ public class CameraController : MonoBehaviour
     [SerializeField, Tooltip("Distance at which offset becomes zero.")]
     private float _offsetFadeDistance = 10f;   // targets > this -> no offset
 
-    private bool _snapNextFrame;             
+    private bool _snapNextFrame;
 
-    public void SnapImmediately() => _snapNextFrame = true;   
 
     /* ------------------------------------------------------------------ */
     /*  Cached components                                                 */
@@ -53,6 +52,7 @@ public class CameraController : MonoBehaviour
         _cam = GetComponent<Camera>();
     }
 
+    
     private void LateUpdate()
     {
         if (_targetA == null || _targetB == null) return;
@@ -60,6 +60,19 @@ public class CameraController : MonoBehaviour
         UpdatePosition();
         UpdateZoom();
         ClampToBounds();
+    }
+
+    /// <summary>
+    /// Request the camera to snap to target position/zoom immediately,
+    /// then keep it steady in the next frame.
+    /// </summary>
+    public void SnapImmediately()
+    {
+        _snapNextFrame = true;
+
+        // Instant snap so there is no visible drift this frame
+        UpdatePosition(); // uses _snapNextFrame to bypass smoothing
+        UpdateZoom();     // applies size and consumes the flag
     }
 
     /* ------------------------------------------------------------------ */
