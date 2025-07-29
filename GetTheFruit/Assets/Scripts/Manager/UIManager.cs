@@ -9,9 +9,13 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+
+    public static UIManager Instance { get; private set; }   // singleton accessor
+
     [Header("Panels")]
     [SerializeField] private GameObject _mainMenuPanel;
     [SerializeField] private GameObject _pausePanel;
+    [SerializeField] private GameObject _winPanel;
 
     [Header("Fade (optional)")]
     [SerializeField] private CanvasGroup _fadeGroup;
@@ -25,6 +29,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _btnQuitInPause;
     [SerializeField] private Button _btnReturnToMenu;
 
+    [Header("Buttons (Win Panel)")]
+    [SerializeField] private Button _btnQuitInWin;
+    [SerializeField] private Button _btnReturnToMenuInWin;
+
     private bool _isPaused;
 
     /* ================================================================== */
@@ -32,11 +40,15 @@ public class UIManager : MonoBehaviour
     /* ================================================================== */
     private void Awake()
     {
+        Instance = this;
+
         // Wire button callbacks
         if (_btnStartGame != null) _btnStartGame.onClick.AddListener(OnStartGame);
         if (_btnQuitGame != null) _btnQuitGame.onClick.AddListener(OnQuitGame);
         if (_btnQuitInPause != null) _btnQuitInPause.onClick.AddListener(OnQuitGame);
         if (_btnReturnToMenu != null) _btnReturnToMenu.onClick.AddListener(OnReturnToMenu);
+        if (_btnReturnToMenuInWin != null) _btnReturnToMenuInWin.onClick.AddListener(OnReturnToMenu);
+        if (_btnQuitInWin != null) _btnQuitInWin.onClick.AddListener(OnQuitGame);
 
         ShowMainMenu();
     }
@@ -72,6 +84,16 @@ public class UIManager : MonoBehaviour
         _pausePanel.SetActive(true);
     }
 
+    public void ShowWinScreen()
+    {
+        Time.timeScale = 0f;          // freeze gameplay
+        _isPaused = false;
+
+        _mainMenuPanel.SetActive(false);
+        _pausePanel.SetActive(false);
+        _winPanel.SetActive(true);
+    }
+
     /* ================================================================== */
     /*  Button handlers                                                   */
     /* ================================================================== */
@@ -99,6 +121,10 @@ public class UIManager : MonoBehaviour
 
     private void OnReturnToMenu()
     {
+        // reset checkpoint before unloading level
+        if (RespawnManager.Instance != null)
+            RespawnManager.Instance.ResetCheckpoint();
+
         Time.timeScale = 1f;
         _isPaused = false;
         HideAll();
@@ -113,6 +139,7 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuPanel.SetActive(false);
         _pausePanel.SetActive(false);
+        _winPanel.SetActive(false);
     }
 
     /* Optional fade utility */

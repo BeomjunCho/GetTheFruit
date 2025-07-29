@@ -14,6 +14,7 @@ public class GameInputManager : MonoBehaviour
         Instance = this;
         Controls = new PlayerControls();
         Controls.Enable();
+        Controls.Global.Enable();
         //DontDestroyOnLoad(gameObject);
     }
 }

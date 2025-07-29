@@ -27,6 +27,8 @@ public class LeverInteractable : MonoBehaviour, IInteractable
     [SerializeField, Tooltip("Seconds before lever can be toggled again.")]
     private float _cooldown = 0.2f;
 
+    public bool finalGate = false;
+
     /* ------------------------------------------------------------------ */
     /*  State                                                             */
     /* ------------------------------------------------------------------ */
@@ -40,6 +42,9 @@ public class LeverInteractable : MonoBehaviour, IInteractable
     {
         _isOn = _startOn;
         UpdateVisual();
+
+        if (_channel != null)
+            _channel.Raise(_isOn);
     }
 
     /* ------------------------------------------------------------------ */
@@ -50,6 +55,10 @@ public class LeverInteractable : MonoBehaviour, IInteractable
         if (Time.time < _nextToggleTime) return;    // cooldown guard
         ToggleLever();
         _nextToggleTime = Time.time + _cooldown;
+        if (finalGate)
+        {
+            RespawnManager.Instance?.SetFinalGateOpen(true);
+        }
     }
 
     /* ------------------------------------------------------------------ */

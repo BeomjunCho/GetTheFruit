@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Kill zone: any player entering this trigger is killed and respawned.
@@ -14,15 +15,9 @@ public class DeadZoneVolume : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        // Optional VFX at the death location
         if (_deathEffect != null)
             Instantiate(_deathEffect, other.transform.position, Quaternion.identity);
 
-        // Attempt to kill the player via PlayerRespawnHandler
-        PlayerRespawnHandler handler = other.GetComponent<PlayerRespawnHandler>();
-        if (handler != null)
-            handler.Die();
-        else
-            Debug.LogWarning("PlayerRespawnHandler missing on Player object.", other);
+        RespawnManager.Instance?.RespawnOrRestartScene();
     }
 }

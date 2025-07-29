@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Presets;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles death and respawn for a single player.
@@ -25,12 +28,27 @@ public class PlayerRespawnHandler : MonoBehaviour
             RespawnManager.Instance.UnregisterPlayer(this);
     }
 
+    private void OnEnable()
+    {
+        GameInputManager.Instance.Controls.Global.Reset.performed += OnReset;
+    }
+
+    private void OnDisable()
+    {
+        GameInputManager.Instance.Controls.Global.Reset.performed -= OnReset;
+    }
+
+    private void OnReset(InputAction.CallbackContext ctx)
+    {
+        RespawnManager.Instance?.RespawnOrRestartScene();
+    }
+
     /* ------------------------------------------------------------------ */
     /*  Public API                                                        */
     public void Die()
     {
         if (_isDead) return;
-
+       
         RespawnManager.Instance.RequestGroupRespawn();
     }
 
@@ -49,5 +67,9 @@ public class PlayerRespawnHandler : MonoBehaviour
         transform.position = pos;
         gameObject.SetActive(true);
         _isDead = false;
+
+        // Snap camera immediately so no drift is visible
+        if (Camera.main != null && Camera.main.TryGetComponent(out CameraController cam))
+            cam.SnapImmediately();
     }
 }

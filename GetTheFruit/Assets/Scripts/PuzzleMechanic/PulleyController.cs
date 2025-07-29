@@ -19,6 +19,10 @@ public class PulleyController : MechanismBase
     [Tooltip("Mass difference below this value is treated as balanced.")]
     [SerializeField] private float _deadZone = 0.1f;
 
+    [SerializeField, Tooltip("Seconds to wait before reacting to a mass change.")]
+    private float _evaluationDelay = 0.5f;
+    private Coroutine _delayRoutine;
+
     private Vector2 _startA;
     private Vector2 _startB;
     private float _massA;
@@ -33,6 +37,15 @@ public class PulleyController : MechanismBase
         _startB = _platformB.position;
     }
 
+    private void OnDisable()
+    {
+        if (_delayRoutine != null)
+        {
+            StopCoroutine(_delayRoutine);
+            _delayRoutine = null;
+        }
+    }
+
     /* ================================================================== */
     /*  Public API called by sensors                                      */
     public void ReportMass(PulleySide side, float mass)
@@ -40,7 +53,12 @@ public class PulleyController : MechanismBase
         if (side == PulleySide.A) _massA = mass;
         else _massB = mass;
 
-        EvaluateMass();
+        if (!gameObject.activeInHierarchy) return;
+
+        if (_delayRoutine != null)
+            StopCoroutine(_delayRoutine);
+
+        _delayRoutine = StartCoroutine(DelayedEvaluate());
     }
 
     /* ================================================================== */
@@ -52,13 +70,14 @@ public class PulleyController : MechanismBase
         Vector2 dir; // movement direction for platform A (B is opposite)
 
         if (Mathf.Abs(diff) <= _deadZone)
-            dir = Vector2.zero;                // balanced → 복귀
+            dir = Vector2.zero;                // balanced → back
         else
             dir = diff > 0 ? Vector2.down      // A heavier
                            : Vector2.up;       // B heavier
 
         StartMove(dir);
     }
+
 
     private void StartMove(Vector2 dir)
     {
@@ -92,6 +111,12 @@ public class PulleyController : MechanismBase
 
             yield return null;
         }
+    }
+
+    private IEnumerator DelayedEvaluate()
+    {
+        yield return new WaitForSeconds(_evaluationDelay);
+        EvaluateMass();
     }
 
     private bool MoveTowards(Transform t, Vector2 target)
