@@ -40,9 +40,9 @@ public class SlimeWomanController : CharacterControllerBase
     /* ------------------------------------------------------------------ */
     /* footstep duplication guard */
     private int _lastFootstepIndex = -1;
-    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanJump_01");
-    private void PlayAttachSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanAttach_01");
-    private void PlayWallClimbingSfx() => AudioManager.Instance.Play2dLoop("SlimeWomanWallClimb_01", 0.1f);
+    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanJump_01", 0.3f);
+    private void PlayAttachSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanAttach_01", 0.8f);
+    private void PlayWallClimbingSfx() => AudioManager.Instance.Play2dLoop("SlimeWomanWallClimb_01", 0.2f);
     private void StopWallClimbingSfx() => AudioManager.Instance.Stop2dSound("SlimeWomanWallClimb_01");
     /// <summary>
     /// Play a random footstep SFX (1‑4) only when grounded and
@@ -64,7 +64,7 @@ public class SlimeWomanController : CharacterControllerBase
         _lastFootstepIndex = idx;
 
         /* volume 0.5f as requested */
-        AudioManager.Instance.Play2dSfx($"SlimeWomanFoot_{idx:D2}", 0.5f);
+        AudioManager.Instance.Play2dSfx($"SlimeWomanFoot_{idx:D2}", 0.3f);
     }
 
     /* ------------------------------------------------------------------ */

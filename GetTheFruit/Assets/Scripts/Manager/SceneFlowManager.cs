@@ -36,11 +36,16 @@ public class SceneFlowManager : MonoBehaviour
     public void LoadMainMenu(string sceneName = "MainMenu")
     {
         StartCoroutine(LoadSceneRoutine(sceneName));
+        AudioManager.Instance.StopMusic();
+        AudioManager.Instance.PlayMusic(MusicTrack.MainMenu, 0.3f);
+        AudioManager.Instance.Play2dLoop("Forest_01", 0.1f);
     }
 
     public void LoadInGame(string sceneName = "InGame")
     {
         StartCoroutine(LoadSceneRoutine(sceneName));
+        AudioManager.Instance.PlayMusic(MusicTrack.InGame , 0.3f);
+        AudioManager.Instance.Play2dLoop("Forest_01", 0.1f);
     }
 
     /* ------------------------------------------------------------------ */

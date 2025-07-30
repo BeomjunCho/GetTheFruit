@@ -46,9 +46,9 @@ public class RockManController : CharacterControllerBase
         AudioManager.Instance.Play2dSfx($"RockManFoot_{idx:D2}", 0.4f);
     }
 
-    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("RockManJump_01", 0.5f);
-    private void PlayLandSfx() => AudioManager.Instance.Play2dSfx("RockManLand_01", 0.5f);
-    private void PlayPunchSfx() => AudioManager.Instance.Play2dSfx("RockManPunch_01");
+    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("RockManJump_01", 0.4f);
+    private void PlayLandSfx() => AudioManager.Instance.Play2dSfx("RockManLand_01", 0.3f);
+    private void PlayPunchSfx() => AudioManager.Instance.Play2dSfx("RockManPunch_01", 0.8f);
 
     /* ------------------------------------------------------------------ */
     /*  Cached input actions                                              */
