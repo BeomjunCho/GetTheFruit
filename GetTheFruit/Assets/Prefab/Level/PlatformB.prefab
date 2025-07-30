@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.20392159, g: 0.20392159, b: 0.20392159, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -145,6 +145,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3692013482981816757}
     m_Modifications:
+    - target: {fileID: 213271421970638203, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334623356856898630, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 389132221812613024, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123969812705882133, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121397444722038892, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216927268278155377, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3019845652820953128, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -193,13 +217,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3452815891353516000, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726026623763614457, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3959855693994554997, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941418981862970868, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084661187371122865, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178310616501614842, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706213950358104265, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6556988116309586364, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_Name
       value: StickyWall (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610648094941665626, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349216838590426065, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7591076084435100217, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7832604549851114944, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8231665456320187041, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968579290689045788, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -219,6 +291,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3692013482981816757}
     m_Modifications:
+    - target: {fileID: 213271421970638203, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 334623356856898630, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 389132221812613024, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123969812705882133, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121397444722038892, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2216927268278155377, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3019845652820953128, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -267,13 +363,61 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3452815891353516000, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726026623763614457, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3959855693994554997, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941418981862970868, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084661187371122865, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5178310616501614842, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706213950358104265, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6556988116309586364, guid: 72cb357549709164690ae700e3ac9939, type: 3}
       propertyPath: m_Name
       value: StickyWall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610648094941665626, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349216838590426065, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7591076084435100217, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7832604549851114944, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8231665456320187041, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8968579290689045788, guid: 72cb357549709164690ae700e3ac9939, type: 3}
+      propertyPath: m_FlipX
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

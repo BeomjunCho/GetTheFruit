@@ -1,7 +1,5 @@
-﻿using UnityEditor.Presets;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles death and respawn for a single player.
