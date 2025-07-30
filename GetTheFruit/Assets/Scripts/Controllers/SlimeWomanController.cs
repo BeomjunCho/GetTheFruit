@@ -23,6 +23,7 @@ public class SlimeWomanController : CharacterControllerBase
     [SerializeField] private float _detachHoldTime = 1f;
     [SerializeField] private float _pushOffForce = 4f;
     [SerializeField] private float _reattachDelay = 0.25f;
+    [SerializeField] private float _wallProbeYOffset = 1f;
 
     /* ------------------------------------------------------------------ */
     /*  Animator                                                          */
@@ -121,9 +122,24 @@ private PlayerControls.SlimeWomanActions _a;
             return;
         }
 
-        /* Detect wall only in air */
-        bool hit = !_isGrounded && Physics2D.OverlapCircle(
-                       _wallCheck.position, _wallRadius, _wallMask);
+
+        // Detect wall only in air - two point check (upper & lower)
+        bool hit = false;
+        if (!_isGrounded)
+        {
+            Vector3 basePos = _wallCheck.position;
+            Vector3 offset = Vector3.up * _wallProbeYOffset; // wall check distance
+
+            bool hitLower = Physics2D.OverlapCircle(
+                                basePos - offset,
+                                _wallRadius, _wallMask);
+
+            bool hitUpper = Physics2D.OverlapCircle(
+                                basePos + offset,
+                                _wallRadius, _wallMask);
+
+            hit = hitLower || hitUpper;
+        }
 
         if (hit)
         {
@@ -196,15 +212,17 @@ private PlayerControls.SlimeWomanActions _a;
 
 #if UNITY_EDITOR
     /* ------------------------------------------------------------------ */
-    /*  Gizmos                                                            */
+    /*  Gizmos – draw both probes (upper & lower)                          */
     /* ------------------------------------------------------------------ */
     private void OnDrawGizmosSelected()
     {
-        if (_wallCheck != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(_wallCheck.position, _wallRadius);
-        }
+        if (_wallCheck == null) return;
+
+        Gizmos.color = Color.magenta;
+        Vector3 offset = Vector3.up * _wallProbeYOffset;
+
+        Gizmos.DrawWireSphere(_wallCheck.position - offset, _wallRadius);
+        Gizmos.DrawWireSphere(_wallCheck.position + offset, _wallRadius);
     }
 #endif
 }

@@ -256,8 +256,9 @@ MonoBehaviour:
     m_Bits: 64
   _climbSpeed: 4
   _detachHoldTime: 1
-  _pushOffForce: 10
+  _pushOffForce: 4
   _reattachDelay: 1
+  _wallProbeYOffset: 0.75
 --- !u!114 &3596807273444544455
 MonoBehaviour:
   m_ObjectHideFlags: 0
