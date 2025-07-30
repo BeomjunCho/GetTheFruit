@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _breakEffect: {fileID: 0}
-  _destroyDelay: 0.05
+  _destroyDelay: 1
 --- !u!1 &5298145472269103228
 GameObject:
   m_ObjectHideFlags: 0

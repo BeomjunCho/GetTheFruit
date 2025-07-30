@@ -105,6 +105,8 @@ public class RespawnManager : MonoBehaviour
         else
         {
             // Full level reset
+            AudioManager.Instance.StopAll3dSounds();
+            AudioManager.Instance.StopAll2dSounds();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

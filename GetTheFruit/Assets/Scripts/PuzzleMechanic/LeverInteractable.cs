@@ -67,7 +67,7 @@ public class LeverInteractable : MonoBehaviour, IInteractable
     private void ToggleLever()
     {
         _isOn = !_isOn;
-
+        AudioManager.Instance.Play3dSfx("LeverPull_01", this.transform);
         // Notify all listeners
         if (_channel != null)
             _channel.Raise(_isOn);

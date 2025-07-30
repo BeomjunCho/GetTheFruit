@@ -37,6 +37,8 @@ public class SceneFlowManager : MonoBehaviour
     {
         StartCoroutine(LoadSceneRoutine(sceneName));
         AudioManager.Instance.StopMusic();
+        AudioManager.Instance.StopAll2dSounds();
+        AudioManager.Instance.StopAll3dSounds();
         AudioManager.Instance.PlayMusic(MusicTrack.MainMenu, 0.3f);
         AudioManager.Instance.Play2dLoop("Forest_01", 0.1f);
     }

@@ -41,7 +41,7 @@ public class SlimeWomanController : CharacterControllerBase
     /* footstep duplication guard */
     private int _lastFootstepIndex = -1;
     private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanJump_01", 0.3f);
-    private void PlayAttachSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanAttach_01", 0.8f);
+    private void PlayAttachSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanAttach_01", 0.6f);
     private void PlayWallClimbingSfx() => AudioManager.Instance.Play2dLoop("SlimeWomanWallClimb_01", 0.2f);
     private void StopWallClimbingSfx() => AudioManager.Instance.Stop2dSound("SlimeWomanWallClimb_01");
     /// <summary>

@@ -44,6 +44,7 @@ public class PulleyController : MechanismBase
             StopCoroutine(_delayRoutine);
             _delayRoutine = null;
         }
+        AudioManager.Instance.Stop3dSound("PulleyMoving_01");
     }
 
     /* ================================================================== */
@@ -84,6 +85,9 @@ public class PulleyController : MechanismBase
         if (!isActiveAndEnabled) return;
 
         if (_moveRoutine != null) StopCoroutine(_moveRoutine);
+
+        AudioManager.Instance.Play3dLoop("PulleyMoving_01", transform);
+
         _moveRoutine = StartCoroutine(MoveRoutine(dir));
     }
 
@@ -96,7 +100,12 @@ public class PulleyController : MechanismBase
                 // Return both platforms to start positions
                 bool doneA = MoveTowards(_platformA, _startA);
                 bool doneB = MoveTowards(_platformB, _startB);
-                if (doneA && doneB) yield break;
+                
+                if (doneA && doneB)
+                {
+                    AudioManager.Instance.Stop3dSound("PulleyMoving_01");
+                    yield break;      
+                }
             }
             else
             {
@@ -106,7 +115,11 @@ public class PulleyController : MechanismBase
 
                 bool doneA = MoveTowards(_platformA, targetA);
                 bool doneB = MoveTowards(_platformB, targetB);
-                if (doneA && doneB) yield break;
+                if (doneA && doneB)
+                {
+                    AudioManager.Instance.Stop3dSound("PulleyMoving_01");
+                    yield break;
+                }
             }
 
             yield return null;

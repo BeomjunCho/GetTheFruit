@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
-/// Breakable wall that is destroyed only by RockMan's punch.
+/// Breakable wall destroyed only by RockMan's punch.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class WeakWall : MonoBehaviour
@@ -13,33 +14,50 @@ public class WeakWall : MonoBehaviour
     [SerializeField, Tooltip("Optional particle prefab spawned on break.")]
     private GameObject _breakEffect = null;
 
-    [SerializeField, Tooltip("Seconds to wait before destroying the wall.")]
-    private float _destroyDelay = 0.05f;
+    [SerializeField, Tooltip("Delay (seconds) before SFX + disappear.")]
+    private float _destroyDelay = 1f;
+
+    /* ------------------------------------------------------------------ */
+    /*  State                                                             */
+    /* ------------------------------------------------------------------ */
+    private bool _broken;
 
     /* ------------------------------------------------------------------ */
     /*  Public API                                                        */
     /* ------------------------------------------------------------------ */
-
-    /// <summary>
-    /// Called by RockManController when the punch ray hits this wall.
-    /// </summary>
     public void Break()
     {
-        // Prevent multiple calls
-        if (!gameObject.activeSelf) return;
+        if (_broken) return;
+        _broken = true;
 
-        // Spawn particle effect at the wall's position
+        /* Disable collision right away so gameplay continues *//*
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+            col.enabled = false;*/
+
+        StartCoroutine(BreakRoutine());
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Coroutine                                                         */
+    /* ------------------------------------------------------------------ */
+    private IEnumerator BreakRoutine()
+    {
+        /* wait before visual disappearance */
+        yield return new WaitForSeconds(_destroyDelay);
+
+        /* play SFX */
+        AudioManager.Instance.Play2dSfx("WeakWallBroken_01");
+
+        /* spawn particles (optional) */
         if (_breakEffect != null)
             Instantiate(_breakEffect, transform.position, Quaternion.identity);
 
-        // Disable visual & collision immediately
-        Collider2D col = GetComponent<Collider2D>();
-        col.enabled = false;
-
+        /* hide visuals */
         foreach (var r in GetComponentsInChildren<Renderer>())
             r.enabled = false;
 
-        // Schedule final destruction
-        Destroy(gameObject, _destroyDelay);
+        /* destroy GameObject immediately after */
+        Destroy(gameObject);
     }
 }

@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _mainMenuPanel;
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _winPanel;
+    [SerializeField] private GameObject _howToPlayPanel;
 
     [Header("Fade (optional)")]
     [SerializeField] private CanvasGroup _fadeGroup;
@@ -24,6 +25,7 @@ public class UIManager : MonoBehaviour
     [Header("Buttons (Main Menu)")]
     [SerializeField] private Button _btnStartGame;
     [SerializeField] private Button _btnQuitGame;
+    [SerializeField] private Button _btnOpenHowToPlay;
 
     [Header("Buttons (Pause)")]
     [SerializeField] private Button _btnQuitInPause;
@@ -32,6 +34,9 @@ public class UIManager : MonoBehaviour
     [Header("Buttons (Win Panel)")]
     [SerializeField] private Button _btnQuitInWin;
     [SerializeField] private Button _btnReturnToMenuInWin;
+
+    [Header("Buttons (HowToPlay)")]
+    [SerializeField] private Button _btnCloseHowToPlay;
 
     private bool _isPaused;
 
@@ -49,6 +54,10 @@ public class UIManager : MonoBehaviour
         if (_btnReturnToMenu != null) _btnReturnToMenu.onClick.AddListener(OnReturnToMenu);
         if (_btnReturnToMenuInWin != null) _btnReturnToMenuInWin.onClick.AddListener(OnReturnToMenu);
         if (_btnQuitInWin != null) _btnQuitInWin.onClick.AddListener(OnQuitGame);
+        if (_btnOpenHowToPlay != null) _btnOpenHowToPlay.onClick.AddListener(ShowHowToPlay);
+        if (_btnCloseHowToPlay != null) _btnCloseHowToPlay.onClick.AddListener(OnCloseHowToPlay);
+
+        _howToPlayPanel.SetActive(false);
 
         ShowMainMenu();
     }
@@ -92,6 +101,21 @@ public class UIManager : MonoBehaviour
         _mainMenuPanel.SetActive(false);
         _pausePanel.SetActive(false);
         _winPanel.SetActive(true);
+    }
+
+    /* ================================================================== */
+    /*  How‑To‑Play logic                                                 */
+    /* ================================================================== */
+    public void ShowHowToPlay()
+    {
+        HideAll();                    
+        _howToPlayPanel.SetActive(true);
+    }
+
+    private void OnCloseHowToPlay()
+    {
+        _howToPlayPanel.SetActive(false);
+        ShowMainMenu();                
     }
 
     /* ================================================================== */

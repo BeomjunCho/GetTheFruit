@@ -71,7 +71,10 @@ public class MovingPlatform : MechanismBase
         if (on)
         {
             if (_moveRoutine == null && _waypoints.Length >= 2)
+            {
                 _moveRoutine = StartCoroutine(MoveRoutine());
+                AudioManager.Instance.Play3dLoop("MovingPlatform_01", this.transform, 5f);
+            }
         }
         else
         {
@@ -80,6 +83,7 @@ public class MovingPlatform : MechanismBase
                 StopCoroutine(_moveRoutine);
                 _moveRoutine = null;
             }
+            AudioManager.Instance.Stop3dSound("MovingPlatform_01");
         }
     }
 
@@ -108,6 +112,7 @@ public class MovingPlatform : MechanismBase
                 {
                     // Stop at the final waypoint when ping‑pong is off
                     _moveRoutine = null;
+                    AudioManager.Instance.Stop3dSound("MovingPlatform_01");
                     yield break;
                 }
             }

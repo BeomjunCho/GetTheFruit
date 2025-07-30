@@ -60,6 +60,11 @@ public class PushableObject : MonoBehaviour
         ClampHorizontalSpeed();
         AdaptDrag();
         _isBeingPushed = false; // reset flag each physics step
+
+        if (_isBeingPushed && IsGrounded())
+            AudioManager.Instance.Play3dLoop("PushableObjDrag_01", this.transform, 1f, false, 50f, 100f);
+        else
+            AudioManager.Instance.Stop3dSound("PushableObjDrag_01");
     }
 
     /* ------------------------------------------------------------------ */

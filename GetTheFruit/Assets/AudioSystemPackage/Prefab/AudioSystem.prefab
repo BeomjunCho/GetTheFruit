@@ -186,8 +186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPoolSize: 20
-  defaultMinDistance: 1
-  defaultMaxDistance: 20
+  defaultMinDistance: 7
+  defaultMaxDistance: 15
   defaultDopplerLevel: 1
   defaultSpread: 0
   sfx3dMixerGroup: {fileID: 5772792866219797530, guid: 50d121ce26c82244596c21c831c854d8, type: 2}
