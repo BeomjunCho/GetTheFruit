@@ -27,6 +27,30 @@ public class RockManController : CharacterControllerBase
     private static readonly int InteractHash = Animator.StringToHash("interact");
 
     /* ------------------------------------------------------------------ */
+    /*  SFX state                                                         */
+    /* ------------------------------------------------------------------ */
+    private int _lastFootstepIndex = -1;
+    private bool _wasGrounded;
+
+    /* ------------------------------------------------------------------ */
+    /*  SFX helpers                                                       */
+    /* ------------------------------------------------------------------ */
+    private void PlayFootstepSfx()
+    {
+        if (!_isGrounded) return;
+
+        int idx;
+        do { idx = Random.Range(1, 5); } while (idx == _lastFootstepIndex);
+        _lastFootstepIndex = idx;
+
+        AudioManager.Instance.Play2dSfx($"RockManFoot_{idx:D2}", 0.4f);
+    }
+
+    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("RockManJump_01", 0.5f);
+    private void PlayLandSfx() => AudioManager.Instance.Play2dSfx("RockManLand_01", 0.5f);
+    private void PlayPunchSfx() => AudioManager.Instance.Play2dSfx("RockManPunch_01");
+
+    /* ------------------------------------------------------------------ */
     /*  Cached input actions                                              */
     /* ------------------------------------------------------------------ */
     private PlayerControls.RockManActions _a;
@@ -59,6 +83,11 @@ public class RockManController : CharacterControllerBase
         if (_a.Interact != null && _a.Interact.WasPressedThisFrame())
             _anim.SetTrigger(InteractHash);
 
+        if (!_wasGrounded && _isGrounded)
+            PlayLandSfx();
+
+        _wasGrounded = _isGrounded;
+
         SyncAnimator();
     }
 
@@ -71,6 +100,7 @@ public class RockManController : CharacterControllerBase
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             _anim.SetTrigger(JumpHash);
+            PlayJumpSfx();
         }
     }
 
@@ -81,6 +111,7 @@ public class RockManController : CharacterControllerBase
     {
         /* Play punch animation immediately */
         _anim.SetTrigger(PunchHash);
+        PlayPunchSfx();
 
         float sign = Mathf.Sign(transform.localScale.x);
         Vector2 origin = (Vector2)transform.position + Vector2.right * sign * _punchRange * 0.5f;

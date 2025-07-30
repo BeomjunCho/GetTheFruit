@@ -35,11 +35,42 @@ public class SlimeWomanController : CharacterControllerBase
     private static readonly int DetachHash = Animator.StringToHash("detach");
     private static readonly int InteractHash = Animator.StringToHash("interact");
 
+    /* ------------------------------------------------------------------ */
+    /*  SFX helpers                                                       */
+    /* ------------------------------------------------------------------ */
+    /* footstep duplication guard */
+    private int _lastFootstepIndex = -1;
+    private void PlayJumpSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanJump_01");
+    private void PlayAttachSfx() => AudioManager.Instance.Play2dSfx("SlimeWomanAttach_01");
+    private void PlayWallClimbingSfx() => AudioManager.Instance.Play2dLoop("SlimeWomanWallClimb_01", 0.1f);
+    private void StopWallClimbingSfx() => AudioManager.Instance.Stop2dSound("SlimeWomanWallClimb_01");
+    /// <summary>
+    /// Play a random footstep SFX (1‑4) only when grounded and
+    /// never repeats the clip that played immediately before.
+    /// </summary>
+    private void PlayFootstepSfx()
+    {
+        /* play only on ground */
+        if (!_isGrounded)
+            return;
 
-/* ------------------------------------------------------------------ */
-/*  State                                                             */
-/* ------------------------------------------------------------------ */
-private PlayerControls.SlimeWomanActions _a;
+        /* pick a clip index different from last */
+        int idx;
+        do
+        {
+            idx = Random.Range(1, 5); // 1..4 inclusive
+        } while (idx == _lastFootstepIndex);
+
+        _lastFootstepIndex = idx;
+
+        /* volume 0.5f as requested */
+        AudioManager.Instance.Play2dSfx($"SlimeWomanFoot_{idx:D2}", 0.5f);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  State                                                             */
+    /* ------------------------------------------------------------------ */
+    private PlayerControls.SlimeWomanActions _a;
     private bool _onWall;
     private float _detachTimer;
     private float _reattachTimer;
@@ -99,6 +130,7 @@ private PlayerControls.SlimeWomanActions _a;
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
             _anim.SetTrigger(JumpHash);
+            PlayJumpSfx();
         }
         else if (_onWall)
         {
@@ -107,6 +139,7 @@ private PlayerControls.SlimeWomanActions _a;
             _rb.velocity = new Vector2(dir * _jumpForce * 0.75f, _jumpForce);
             _anim.SetTrigger(JumpHash);
             DetachFromWall(true);
+            StopWallClimbingSfx();
         }
     }
 
@@ -145,7 +178,11 @@ private PlayerControls.SlimeWomanActions _a;
         {
             /* Newly attached? trigger stick anim */
             if (!_onWall)
+            {
                 _anim.SetTrigger(StickHash);
+                PlayAttachSfx();
+                PlayWallClimbingSfx();
+            }
 
             _wallSide = _wallCheck.position.x > transform.position.x ? 1 : -1;
             _onWall = true;
@@ -190,6 +227,7 @@ private PlayerControls.SlimeWomanActions _a;
         _reattachTimer = _reattachDelay;
 
         _anim.SetTrigger(DetachHash);
+        StopWallClimbingSfx();
 
         if (!withJumpImpulse)
         {
