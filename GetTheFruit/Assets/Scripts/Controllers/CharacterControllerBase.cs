@@ -17,11 +17,13 @@ public abstract class CharacterControllerBase : MonoBehaviour
     [SerializeField] private float _groundRadius = 0.1f;
     [SerializeField] private LayerMask _groundMask;
 
+    [Header("Refs")]
+    [SerializeField] protected Animator _anim = null;
+
     /* ------------------------------------------------------------------ */
     /*  Cached components                                                 */
     /* ------------------------------------------------------------------ */
     protected Rigidbody2D _rb;
-    protected Animator _anim;
 
     /* ------------------------------------------------------------------ */
     /*  State                                                             */
@@ -35,14 +37,16 @@ public abstract class CharacterControllerBase : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _anim = GetComponent<Animator>();
+
+        if (_anim == null ) 
+            _anim = GetComponent<Animator>();
+
         _originalScale = transform.localScale;           // cache initial scale
     }
 
     protected virtual void Update()
     {
         UpdateGroundStatus();
-        UpdateAnimation();
     }
 
     /* ------------------------------------------------------------------ */
@@ -81,12 +85,5 @@ public abstract class CharacterControllerBase : MonoBehaviour
     {
         _isGrounded = Physics2D.OverlapCircle(_groundCheck.position,
                                               _groundRadius, _groundMask);
-    }
-
-    private void UpdateAnimation()
-    {
-        if (_anim == null) return;
-        _anim.SetFloat("Speed", Mathf.Abs(_rb.velocity.x));
-        _anim.SetBool("Grounded", _isGrounded);
     }
 }

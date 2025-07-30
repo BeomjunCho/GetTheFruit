@@ -719,7 +719,32 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      RockGuy_0: 3187428940262601595
+      RockGuy_1: -7850434513527997914
+      RockGuy_10: 84956779118349880
+      RockGuy_11: -9046815297756315638
+      RockGuy_12: -8108080071313682533
+      RockGuy_13: -6343149029377513489
+      RockGuy_14: -5977551499332252945
+      RockGuy_15: 3596921611057588801
+      RockGuy_16: 522067391668904003
+      RockGuy_17: 4165672434770694994
+      RockGuy_18: -3875298314888116913
+      RockGuy_19: -2788692467161291135
+      RockGuy_2: 2330430143081594599
+      RockGuy_20: 7008088485812603727
+      RockGuy_21: 7574242955591794247
+      RockGuy_22: 7148929233418968364
+      RockGuy_23: 4646090835042842775
+      RockGuy_24: 5733594787166929199
+      RockGuy_3: 6200949407571935973
+      RockGuy_4: 8354651913808146135
+      RockGuy_5: 6125068101628308322
+      RockGuy_6: -1366282436344427664
+      RockGuy_7: -2815769771139117969
+      RockGuy_8: -6364504351351617288
+      RockGuy_9: 55208186901721670
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

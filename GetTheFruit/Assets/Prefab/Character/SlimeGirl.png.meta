@@ -647,7 +647,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SlimeGirl_0: 7310936725892413232
+      SlimeGirl_1: -9219581963012456266
+      SlimeGirl_10: -3415144631893377055
+      SlimeGirl_11: 3736300222843305564
+      SlimeGirl_12: -4030778496750613613
+      SlimeGirl_13: -8986835834397275889
+      SlimeGirl_14: 4570810328371334269
+      SlimeGirl_15: -2801558508826533080
+      SlimeGirl_16: 2444016827198018116
+      SlimeGirl_17: 5465579358480682461
+      SlimeGirl_18: 1178971789442186654
+      SlimeGirl_19: 8400873011721541754
+      SlimeGirl_2: 7973039197360996998
+      SlimeGirl_20: -5272745958538200568
+      SlimeGirl_21: 1510793009182309385
+      SlimeGirl_3: -1073114564251501513
+      SlimeGirl_4: -8991729212048199024
+      SlimeGirl_5: -3768334240124059323
+      SlimeGirl_6: -6005398573924374149
+      SlimeGirl_7: -4712316104761337049
+      SlimeGirl_8: 7534710532364219358
+      SlimeGirl_9: 5638598987569920203
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

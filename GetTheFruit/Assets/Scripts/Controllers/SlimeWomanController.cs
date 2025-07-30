@@ -2,7 +2,9 @@
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Handles move, jump, wall‑stick, wall‑climb and wall‑detach for SlimeWoman (P1).
+/// Handles move, jump, wall‑stick/climb/detach and interact actions for
+/// SlimeWoman (P1) while driving the Animator (Idle, Walk, Jump, Stick,
+/// Detach, Interact).
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class SlimeWomanController : CharacterControllerBase
@@ -14,18 +16,29 @@ public class SlimeWomanController : CharacterControllerBase
     [SerializeField] private float _jumpForce = 10f;
 
     [Header("Wall Stick / Climb")]
-    [SerializeField] private Transform _wallCheck;
+    [SerializeField] private Transform _wallCheck = null;
     [SerializeField] private float _wallRadius = 0.1f;
-    [SerializeField] private LayerMask _wallMask;
+    [SerializeField] private LayerMask _wallMask = default;
     [SerializeField] private float _climbSpeed = 4f;
     [SerializeField] private float _detachHoldTime = 1f;
     [SerializeField] private float _pushOffForce = 4f;
     [SerializeField] private float _reattachDelay = 0.25f;
 
     /* ------------------------------------------------------------------ */
-    /*  State                                                             */
+    /*  Animator                                                          */
     /* ------------------------------------------------------------------ */
-    private PlayerControls.SlimeWomanActions _a;
+    private static readonly int SpeedHash = Animator.StringToHash("speed");
+    private static readonly int GroundHash = Animator.StringToHash("isGrounded");
+    private static readonly int JumpHash = Animator.StringToHash("jump");
+    private static readonly int StickHash = Animator.StringToHash("stick");
+    private static readonly int DetachHash = Animator.StringToHash("detach");
+    private static readonly int InteractHash = Animator.StringToHash("interact");
+
+
+/* ------------------------------------------------------------------ */
+/*  State                                                             */
+/* ------------------------------------------------------------------ */
+private PlayerControls.SlimeWomanActions _a;
     private bool _onWall;
     private float _detachTimer;
     private float _reattachTimer;
@@ -44,13 +57,13 @@ public class SlimeWomanController : CharacterControllerBase
     {
         if (_onWall)
         {
-            // Climb up/down along the wall
+            /* Vertical climb along wall */
             float vertical = _a.Move.ReadValue<Vector2>().y;
             _rb.velocity = new Vector2(0f, vertical * _climbSpeed);
         }
         else
         {
-            // Normal ground/air horizontal move
+            /* Normal horizontal move */
             float horizontal = _a.Move.ReadValue<Vector2>().x;
             Move(horizontal);
         }
@@ -61,28 +74,37 @@ public class SlimeWomanController : CharacterControllerBase
         base.Update();
         HandleWallStick();
 
-        // Jump key should work only when NOT on a wall
+        /* Jump is allowed only when not sticking */
         if (!_onWall && _a.Jump.WasPressedThisFrame())
             TryJump();
 
-        // re‑attach delay timer
-        if (_reattachTimer > 0f) _reattachTimer -= Time.deltaTime;
+        /* Optional interact trigger */
+        if (_a.Interact != null && _a.Interact.WasPressedThisFrame())
+            _anim.SetTrigger(InteractHash);
+
+        if (_reattachTimer > 0f)
+            _reattachTimer -= Time.deltaTime;
+
+        SyncAnimator();
     }
 
     /* ------------------------------------------------------------------ */
     /*  Jump logic                                                        */
     /* ------------------------------------------------------------------ */
+    /// <inheritdoc/>
     public override void TryJump()
     {
         if (_isGrounded)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+            _anim.SetTrigger(JumpHash);
         }
         else if (_onWall)
         {
-            // Wall jump away from surface
-            float dir = -_wallSide;                // opposite to wall
+            /* Wall jump away from surface */
+            float dir = -_wallSide;
             _rb.velocity = new Vector2(dir * _jumpForce * 0.75f, _jumpForce);
+            _anim.SetTrigger(JumpHash);
             DetachFromWall(true);
         }
     }
@@ -92,31 +114,35 @@ public class SlimeWomanController : CharacterControllerBase
     /* ------------------------------------------------------------------ */
     private void HandleWallStick()
     {
-
-        // Skip stick detection while in cooldown
+        /* Skip detection while cooldown active */
         if (_reattachTimer > 0f)
         {
             _onWall = false;
             return;
         }
 
-        // Check wall presence only if airborne (no ground)
-        bool hit = !_isGrounded && Physics2D.OverlapCircle(_wallCheck.position,
-                                                           _wallRadius, _wallMask);
+        /* Detect wall only in air */
+        bool hit = !_isGrounded && Physics2D.OverlapCircle(
+                       _wallCheck.position, _wallRadius, _wallMask);
+
         if (hit)
         {
-            // Determine side
+            /* Newly attached? trigger stick anim */
+            if (!_onWall)
+                _anim.SetTrigger(StickHash);
+
             _wallSide = _wallCheck.position.x > transform.position.x ? 1 : -1;
             _onWall = true;
             _rb.gravityScale = 0f;
             _rb.velocity = Vector2.zero;
 
-            // Face the wall
-            transform.localScale = new Vector3(_wallSide * Mathf.Abs(transform.localScale.x),
-                                               transform.localScale.y,
-                                               transform.localScale.z);
+            /* Face the wall */
+            transform.localScale = new Vector3(
+                _wallSide * Mathf.Abs(transform.localScale.x),
+                transform.localScale.y,
+                transform.localScale.z);
 
-            // Hold‑to‑detach
+            /* Hold‑to‑detach timer */
             if (_a.WallDetach.IsPressed())
             {
                 _detachTimer += Time.deltaTime;
@@ -130,17 +156,16 @@ public class SlimeWomanController : CharacterControllerBase
         }
         else
         {
-            // Not on wall
-            _onWall = false;
-            _rb.gravityScale = 1f;
-            _detachTimer = 0f;
+            /* Lost wall contact */
+            if (_onWall)
+                DetachFromWall(false);
         }
     }
 
     /// <summary>
-    /// Leaves the wall, optionally with a push‑off impulse.
+    /// Leaves the wall, optionally after a jump impulse.
     /// </summary>
-    /// <param name="withJumpImpulse">true when wall‑jump already applied.</param>
+    /// <param name="withJumpImpulse">true if a wall‑jump was already applied.</param>
     private void DetachFromWall(bool withJumpImpulse)
     {
         _onWall = false;
@@ -148,18 +173,30 @@ public class SlimeWomanController : CharacterControllerBase
         _detachTimer = 0f;
         _reattachTimer = _reattachDelay;
 
+        _anim.SetTrigger(DetachHash);
+
         if (!withJumpImpulse)
         {
-            // Horizontal push away from wall so collider no longer overlaps
+            /* Push a bit away from wall */
             _rb.velocity = new Vector2(-_wallSide * _pushOffForce, 0.5f);
         }
     }
 
-
+    /* ------------------------------------------------------------------ */
+    /*  Animator sync                                                     */
+    /* ------------------------------------------------------------------ */
+    /// <summary>
+    /// Writes movement state into Animator every frame.
+    /// </summary>
+    private void SyncAnimator()
+    {
+        _anim.SetFloat(SpeedHash, Mathf.Abs(_rb.velocity.x));
+        _anim.SetBool(GroundHash, _isGrounded);
+    }
 
 #if UNITY_EDITOR
     /* ------------------------------------------------------------------ */
-    /*  Gizmos                                                             */
+    /*  Gizmos                                                            */
     /* ------------------------------------------------------------------ */
     private void OnDrawGizmosSelected()
     {

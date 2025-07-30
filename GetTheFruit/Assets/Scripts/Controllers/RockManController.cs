@@ -18,6 +18,15 @@ public class RockManController : CharacterControllerBase
     [SerializeField] private LayerMask _weakWallMask;
 
     /* ------------------------------------------------------------------ */
+    /*  Animator                                                          */
+    /* ------------------------------------------------------------------ */
+    private static readonly int SpeedHash = Animator.StringToHash("speed");
+    private static readonly int GroundHash = Animator.StringToHash("isGrounded");
+    private static readonly int PunchHash = Animator.StringToHash("punch");
+    private static readonly int JumpHash = Animator.StringToHash("jump");
+    private static readonly int InteractHash = Animator.StringToHash("interact");
+
+    /* ------------------------------------------------------------------ */
     /*  Cached input actions                                              */
     /* ------------------------------------------------------------------ */
     private PlayerControls.RockManActions _a;
@@ -45,6 +54,12 @@ public class RockManController : CharacterControllerBase
 
         if (_a.Punch.WasPressedThisFrame())
             Punch();
+
+        /* Optional interact animation trigger */
+        if (_a.Interact != null && _a.Interact.WasPressedThisFrame())
+            _anim.SetTrigger(InteractHash);
+
+        SyncAnimator();
     }
 
     /* ------------------------------------------------------------------ */
@@ -55,6 +70,7 @@ public class RockManController : CharacterControllerBase
         if (_isGrounded)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+            _anim.SetTrigger(JumpHash);
         }
     }
 
@@ -63,11 +79,17 @@ public class RockManController : CharacterControllerBase
     /* ------------------------------------------------------------------ */
     private void Punch()
     {
+        /* Play punch animation immediately */
+        _anim.SetTrigger(PunchHash);
+
         float sign = Mathf.Sign(transform.localScale.x);
         Vector2 origin = (Vector2)transform.position + Vector2.right * sign * _punchRange * 0.5f;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.right * sign,
-                                             _punchRange, _weakWallMask);
+        RaycastHit2D hit = Physics2D.Raycast(
+            origin,
+            Vector2.right * sign,
+            _punchRange,
+            _weakWallMask);
 
         if (hit.collider != null && hit.collider.TryGetComponent(out WeakWall wall))
         {
@@ -85,5 +107,17 @@ public class RockManController : CharacterControllerBase
             float dir = Mathf.Sign(col.transform.position.x - transform.position.x);
             col.rigidbody.AddForce(Vector2.right * dir * _moveSpeed * 2f, ForceMode2D.Force);
         }
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Animator sync                                                     */
+    /* ------------------------------------------------------------------ */
+    /// <summary>
+    /// Writes movement state into Animator every frame.
+    /// </summary>
+    private void SyncAnimator()
+    {
+        _anim.SetFloat(SpeedHash, Mathf.Abs(_rb.velocity.x));
+        _anim.SetBool(GroundHash, _isGrounded);
     }
 }

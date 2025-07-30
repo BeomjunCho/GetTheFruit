@@ -46,8 +46,10 @@ GameObject:
   - component: {fileID: 7804036252696467546}
   - component: {fileID: 8884955889953096699}
   - component: {fileID: 3596807273444544455}
+  - component: {fileID: 6968618198252681315}
+  - component: {fileID: 3051492179990834333}
   m_Layer: 3
-  m_Name: SlimeWoman
+  m_Name: SlimeWomanPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,7 +115,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3713219614965599903, guid: 1dd6ec0adefa0574abccdf68d13bd03d, type: 3}
+  m_Sprite: {fileID: 7310936725892413232, guid: 10d741bc1df72dd4999a17ea005b3a38, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -162,7 +164,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.28}
+    oldSize: {x: 0.29, y: 0.3}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -245,6 +247,7 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 1728
+  _anim: {fileID: 3051492179990834333}
   _jumpForce: 10
   _wallCheck: {fileID: 4362361207674083747}
   _wallRadius: 0.1
@@ -253,7 +256,7 @@ MonoBehaviour:
     m_Bits: 64
   _climbSpeed: 4
   _detachHoldTime: 1
-  _pushOffForce: 4
+  _pushOffForce: 10
   _reattachDelay: 1
 --- !u!114 &3596807273444544455
 MonoBehaviour:
@@ -272,6 +275,40 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _playerIndex: 0
+--- !u!114 &6968618198252681315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465334812057441672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc61295f0aa09334db53a127930cf16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &3051492179990834333
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465334812057441672}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d911ff76a5fe5eb4abcd096d224f4969, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6024202214815931751
 GameObject:
   m_ObjectHideFlags: 0
