@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4170592371698031170}
   - component: {fileID: 4361198311796616967}
   - component: {fileID: 4010640340665345374}
+  - component: {fileID: 5416639614190874890}
   m_Layer: 3
   m_Name: RockMan
   m_TagString: Player
@@ -81,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 815424164945274260, guid: 4312627d97ecf5246a570d3f9714d21a, type: 3}
+  m_Sprite: {fileID: 3187428940262601595, guid: 8012d66210efb11479033cb8418337d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,7 +131,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.34}
+    oldSize: {x: 0.29, y: 0.32}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -235,6 +236,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _playerIndex: 1
+--- !u!95 &5416639614190874890
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8179674634698724049}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abdc7cc93af771a4ea79d9fecdf3fb82, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8577541982007514765
 GameObject:
   m_ObjectHideFlags: 0
